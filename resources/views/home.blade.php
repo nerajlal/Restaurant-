@@ -6,8 +6,7 @@
     <div class="container">
         <h1 class="display-1 fw-bold text-gold mb-4 animate__animated animate__fadeInUp">Test Resto</h1>
         <p class="lead mb-5 animate__animated animate__fadeInUp animate__delay-1s">A Culinary Journey of Exquisite Flavors & Elegant Ambiance</p>
-        <a href="{{ route('menu.index') }}" class="btn btn-gold btn-lg me-3 animate__animated animate__fadeInUp animate__delay-2s">View Menu</a>
-        <a href="{{ route('reservation.index') }}" class="btn btn-outline-light btn-lg animate__animated animate__fadeInUp animate__delay-2s">Book a Table</a>
+        <a href="{{ route('menu.index') }}" class="btn btn-gold btn-lg animate__animated animate__fadeInUp animate__delay-2s">View Menu</a>
     </div>
 </section>
 
@@ -52,7 +51,7 @@
                     <div class="card-body text-center">
                         <h5 class="card-title font-playfair">{{ $item->name }}</h5>
                         <p class="card-text text-muted small">{{ Str::limit($item->description, 50) }}</p>
-                        <p class="text-gold fw-bold">${{ number_format($item->price, 2) }}</p>
+                        <p class="text-gold fw-bold">₹{{ number_format($item->price, 2) }}</p>
                     </div>
                 </div>
             </div>

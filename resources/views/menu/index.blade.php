@@ -63,7 +63,7 @@
                     <div class="card-body p-4 bg-secondary flex-grow-1 d-flex flex-column">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <h5 class="text-gold mb-0 playfair">{{ $item->name }}</h5>
-                            <span class="h5 text-white mb-0">${{ number_format($item->price, 2) }}</span>
+                            <span class="h5 text-white mb-0">₹{{ number_format($item->price, 2) }}</span>
                         </div>
                         <p class="text-white-50 small mb-4 flex-grow-1">{{ $item->description }}</p>
                         
@@ -113,7 +113,7 @@
             <div class="modal-footer border-secondary justify-content-between">
                 <div>
                     <small class="text-white-50">Total</small>
-                    <h4 class="text-gold mb-0" id="cart-total">$0.00</h4>
+                    <h4 class="text-gold mb-0" id="cart-total">₹0.00</h4>
                 </div>
                 <button type="button" class="btn btn-gold" onclick="placeOrder()">Place Order</button>
             </div>
@@ -202,7 +202,7 @@
                     <li class="list-group-item bg-transparent border-secondary text-white d-flex justify-content-between align-items-center px-0">
                         <div>
                             <h6 class="mb-0">${item.name}</h6>
-                            <small class="text-gold">$${item.price}</small>
+                            <small class="text-gold">₹${item.price}</small>
                         </div>
                         <div class="d-flex align-items-center gap-2">
                             <button class="btn btn-sm btn-outline-secondary text-white" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
@@ -216,7 +216,7 @@
         }
 
         document.getElementById('cart-items-container').innerHTML = html;
-        document.getElementById('cart-total').innerText = '$' + total.toFixed(2);
+        document.getElementById('cart-total').innerText = '₹' + total.toFixed(2);
         document.getElementById('cart-count').innerText = count;
     }
 </script>

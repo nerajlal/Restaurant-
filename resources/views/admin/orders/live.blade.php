@@ -26,13 +26,23 @@
 </div>
 
 <!-- Audio for Alerts -->
-<audio id="order-alarm" src="{{ asset('sounds/alarm.mp3') }}" preload="auto" loop></audio>
+<audio id="order-alarm" src="{{ asset('sounds/alarm.wav') }}" preload="auto" loop></audio>
 
 <script>
     let lastOrderCount = 0;
     let isPlaying = false;
     const alarm = document.getElementById('order-alarm');
     const container = document.getElementById('orders-container');
+
+    // Sound toggle event listener
+    document.getElementById('soundToggle').addEventListener('change', function() {
+        if (!this.checked && isPlaying) {
+            // Stop alarm immediately when sound is toggled off
+            alarm.pause();
+            alarm.currentTime = 0;
+            isPlaying = false;
+        }
+    });
 
     // Poll every 5 seconds
     setInterval(fetchOrders, 5000);
@@ -106,7 +116,7 @@
                     <div class="card-body">
                         <div class="mb-3 d-flex justify-content-between align-items-center">
                             ${statusBadge}
-                            <span class="fw-bold">$${Number(order.total_amount).toFixed(2)}</span>
+                            <span class="fw-bold">₹${Number(order.total_amount).toFixed(2)}</span>
                         </div>
                         
                         <ul class="list-group list-group-flush mb-3">
