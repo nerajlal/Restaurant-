@@ -1,53 +1,96 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Dashboard</h1>
+<div class="mb-4">
+    <h1 class="h2">Home</h1>
+    <p class="text-muted">Here's what's happening with your restaurant today.</p>
 </div>
 
 <div class="row">
-    <div class="col-md-4 mb-4">
-        <div class="card text-white bg-primary mb-3 h-100 shadow">
-            <div class="card-header">Categories</div>
+    <!-- Quick Stats Cards (Polaris Style) -->
+    <div class="col-md-4">
+        <div class="card h-100">
             <div class="card-body">
-                <h5 class="card-title display-4">{{ $categoryCount }}</h5>
-                <p class="card-text">Total Menu Categories</p>
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h6 class="card-subtitle text-muted text-uppercase small fw-bold">Total Reservations</h6>
+                    <i class="fas fa-calendar-check text-muted"></i>
+                </div>
+                <h3 class="card-title mb-0">{{ $totalReservations }}</h3>
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-4">
-        <div class="card text-white bg-success mb-3 h-100 shadow">
-            <div class="card-header">Menu Items</div>
+    <div class="col-md-4">
+        <div class="card h-100">
             <div class="card-body">
-                <h5 class="card-title display-4">{{ $menuItemCount }}</h5>
-                <p class="card-text">Total Active Dishes</p>
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h6 class="card-subtitle text-muted text-uppercase small fw-bold">Menu Items</h6>
+                    <i class="fas fa-utensils text-muted"></i>
+                </div>
+                <h3 class="card-title mb-0">{{ $totalMenuItems }}</h3>
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-4">
-        <div class="card text-white bg-warning mb-3 h-100 shadow">
-            <div class="card-header text-dark">Pending Reservations</div>
-            <div class="card-body text-dark">
-                <h5 class="card-title display-4">{{ $reservationCount }}</h5>
-                <p class="card-text">Reservations waiting for confirmation</p>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h6 class="card-subtitle text-muted text-uppercase small fw-bold">Categories</h6>
+                    <i class="fas fa-tags text-muted"></i>
+                </div>
+                <h3 class="card-title mb-0">{{ $totalCategories }}</h3>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row mt-4">
-    <div class="col-md-12">
-        <div class="card shadow">
+    <div class="col-12">
+        <div class="card">
             <div class="card-header bg-white">
-                <h5 class="card-title mb-0">Quick Actions</h5>
+                <h5 class="mb-0 fs-6">Recent Reservations</h5>
             </div>
-            <div class="card-body">
-                <a href="{{ route('admin.menu_items.create') }}" class="btn btn-primary me-2">
-                    <i class="fas fa-plus"></i> Add Menu Item
-                </a>
-                <a href="{{ route('admin.categories.create') }}" class="btn btn-outline-secondary">
-                    <i class="fas fa-folder-plus"></i> Add Category
-                </a>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr style="background-color: #f9fafb;">
+                                <th class="ps-4">Guest</th>
+                                <th>Date & Time</th>
+                                <th>Guests</th>
+                                <th>Status</th>
+                                <th class="text-end pe-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($recentReservations as $reservation)
+                            <tr>
+                                <td class="ps-4 fw-medium">{{ $reservation->name }}</td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($reservation->reservation_date)->format('M d') }},
+                                    {{ \Carbon\Carbon::parse($reservation->reservation_time)->format('h:i A') }}
+                                </td>
+                                <td>{{ $reservation->guests }} people</td>
+                                <td>
+                                    @if($reservation->status == 'confirmed')
+                                        <span class="badge bg-success">Confirmed</span>
+                                    @elseif($reservation->status == 'pending')
+                                        <span class="badge" style="background-color: #ffea8a !important; color: #5c4300;">Pending</span>
+                                    @else
+                                        <span class="badge bg-secondary">{{ $reservation->status }}</span>
+                                    @endif
+                                </td>
+                                <td class="text-end pe-4">
+                                    <a href="{{ route('admin.reservations.index') }}" class="btn btn-sm btn-outline-secondary">View</a>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">No recent reservations found.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

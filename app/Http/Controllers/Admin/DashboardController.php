@@ -12,10 +12,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $categoryCount = Category::count();
-        $menuItemCount = MenuItem::count();
-        $reservationCount = Reservation::where('status', 'pending')->count();
+        $totalReservations = Reservation::count();
+        $totalMenuItems = MenuItem::count();
+        $totalCategories = Category::count();
+        $recentReservations = Reservation::latest()->take(5)->get();
 
-        return view('admin.dashboard', compact('categoryCount', 'menuItemCount', 'reservationCount'));
+        return view('admin.dashboard', compact('totalReservations', 'totalMenuItems', 'totalCategories', 'recentReservations'));
     }
 }
