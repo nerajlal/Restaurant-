@@ -27,6 +27,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     
     Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
     Route::patch('/reservations/{reservation}', [AdminReservationController::class, 'update'])->name('reservations.update');
+
+    Route::get('/qr-code', [App\Http\Controllers\Admin\QrCodeController::class, 'index'])->name('qr_code.index');
+    Route::get('/qr-code/download', [App\Http\Controllers\Admin\QrCodeController::class, 'download'])->name('qr_code.download');
 });
 
 // Profile Routes (Standard Breeze)

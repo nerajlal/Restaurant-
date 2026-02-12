@@ -113,7 +113,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link {{ request()->routeIs('admin.qr_code.*') ? 'active' : '' }}" href="{{ route('admin.qr_code.index') }}">
                                 <i class="fas fa-qrcode me-2"></i>
                                 QR Codes
                             </a>
