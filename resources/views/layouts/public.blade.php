@@ -180,9 +180,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact</a>
                     </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-gold" href="{{ route('reservation.index') }}">Book a Table</a>
-                    </li>
+                    <!-- Book Table Removed -->
                     @auth
                         <li class="nav-item dropdown ms-lg-3">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

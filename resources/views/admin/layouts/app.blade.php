@@ -290,10 +290,16 @@
                     Home
                 </a>
                 
-                <div class="text-muted small fw-bold px-3 mt-3 mb-1 text-uppercase" style="font-size: 0.7rem;">Orders</div>
-                <a class="nav-link {{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}" href="{{ route('admin.reservations.index') }}">
-                    <i class="fas fa-clock"></i>
-                    Reservations
+                <!-- Reservations Removed -->
+
+                <div class="text-muted small fw-bold px-3 mt-3 mb-1 text-uppercase" style="font-size: 0.7rem;">Live Service</div>
+                <a class="nav-link {{ request()->routeIs('admin.orders.live') ? 'active' : '' }}" href="{{ route('admin.orders.live') }}">
+                    <i class="fas fa-satellite-dish"></i>
+                    Live Orders
+                </a>
+                <a class="nav-link {{ request()->routeIs('admin.tables.*') ? 'active' : '' }}" href="{{ route('admin.tables.index') }}">
+                    <i class="fas fa-chair"></i>
+                    Tables & QR
                 </a>
 
                 <div class="text-muted small fw-bold px-3 mt-3 mb-1 text-uppercase" style="font-size: 0.7rem;">Products</div>
