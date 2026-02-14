@@ -1,76 +1,65 @@
 @extends('layouts.public')
 
+@section('title', 'Contact')
+
 @section('content')
-<div class="section-padding pt-5 mt-5">
-    <div class="container mt-5">
-        <div class="text-center mb-5">
-            <h6 class="text-gold text-uppercase letter-spacing-2 mb-3">Get in Touch</h6>
-            <h1 class="display-3 font-playfair text-dark">Contact Us</h1>
-        </div>
+<!-- Hero Section -->
+<section class="position-relative d-flex align-items-center justify-content-center overflow-hidden" style="height: 40vh; margin-top: -100px; padding-top: 100px;">
+    <div class="position-absolute w-100 h-100 top-0 start-0" style="background: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed; opacity: 0.8;"></div>
+    <div class="position-absolute w-100 h-100 top-0 start-0 bg-white opacity-70"></div>
+    <div class="text-center position-relative z-1" data-aos="fade-up">
+        <h1 class="display-3 text-dark fw-bold mb-0 font-cinzel">Get in Touch</h1>
+    </div>
+</section>
 
+<!-- Contact Content -->
+<section class="section-padding py-5">
+    <div class="container py-5">
         <div class="row g-5">
-            <div class="col-lg-6">
-                <div class="card border-0 shadow-sm h-100 bg-white">
-                    <div class="card-body p-5">
-                        <h3 class="font-playfair mb-4 text-dark">Information</h3>
-                        <p class="mb-4 text-muted">We look forward to hearing from you. Whether you have a question about our menu, want to book a private event, or just want to say hello.</p>
-                        
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="flex-shrink-0 btn-gold rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                <i class="fas fa-map-marker-alt text-white"></i>
-                            </div>
-                            <div class="ms-3">
-                                <h5 class="mb-1 text-dark">Address</h5>
-                                <p class="text-muted mb-0">123 Luxury Avenue, New York, NY 10012</p>
-                            </div>
-                        </div>
+            <!-- Info -->
+            <div class="col-lg-5" data-aos="fade-right">
+                <div class="pe-lg-5">
+                    <h3 class="font-cinzel text-dark mb-5">Visit Us</h3>
+                    
+                    <div class="mb-5">
+                        <h6 class="text-uppercase letter-spacing-2 text-muted small mb-2">Address</h6>
+                        <p class="font-lato lead text-dark">123 Luxury Avenue<br>New York, NY 10012</p>
+                    </div>
 
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="flex-shrink-0 btn-gold rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                <i class="fas fa-phone text-white"></i>
-                            </div>
-                            <div class="ms-3">
-                                <h5 class="mb-1 text-dark">Phone</h5>
-                                <p class="text-muted mb-0">+1 234 567 8900</p>
-                            </div>
-                        </div>
+                    <div class="mb-5">
+                        <h6 class="text-uppercase letter-spacing-2 text-muted small mb-2">Concierge</h6>
+                        <p class="font-lato lead text-dark">+1 234 567 8900<br>concierge@thewhitelotus.com</p>
+                    </div>
 
-                        <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0 btn-gold rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                <i class="fas fa-envelope text-white"></i>
-                            </div>
-                            <div class="ms-3">
-                                <h5 class="mb-1 text-dark">Email</h5>
-                                <p class="text-muted mb-0">info@testresto.com</p>
-                            </div>
-                        </div>
+                    <div class="mb-5">
+                        <h6 class="text-uppercase letter-spacing-2 text-muted small mb-2">Hours</h6>
+                        <p class="font-lato text-dark">Mon-Sun: 11:00 AM - 11:00 PM</p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-6">
-                <div class="card border-0 shadow-sm h-100 bg-white">
-                     <div class="card-body p-5">
-                        <h3 class="font-playfair mb-4 text-dark">Send a Message</h3>
-                        <form>
-                            <div class="mb-3">
-                                <label for="name" class="form-label text-dark">Name</label>
-                                <input type="text" class="form-control" id="name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label text-dark">Email</label>
-                                <input type="email" class="form-control" id="email">
-                            </div>
-                            <div class="mb-3">
-                                <label for="message" class="form-label text-dark">Message</label>
-                                <textarea class="form-control" id="message" rows="5"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-gold w-100">Send Message</button>
-                        </form>
-                     </div>
-                </div>
+            <!-- Form -->
+            <div class="col-lg-7" data-aos="fade-left">
+                <h3 class="font-cinzel text-dark mb-5">Inquiries</h3>
+                <form>
+                    <div class="mb-4">
+                        <input type="text" class="form-control border-0 border-bottom rounded-0 px-0 py-3 bg-transparent" placeholder="Name" style="border-color: #ddd;">
+                    </div>
+                    <div class="mb-4">
+                        <input type="email" class="form-control border-0 border-bottom rounded-0 px-0 py-3 bg-transparent" placeholder="Email" style="border-color: #ddd;">
+                    </div>
+                    <div class="mb-5">
+                        <textarea class="form-control border-0 border-bottom rounded-0 px-0 py-3 bg-transparent" rows="3" placeholder="Message" style="border-color: #ddd;"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-outline-dark rounded-0 px-5 py-3 font-cinzel text-uppercase letter-spacing-1">Send Message</button>
+                </form>
             </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Minimal Map -->
+<section class="w-100">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.11976373946229!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin!4v1645516956976!5m2!1sen!2sin" width="100%" height="400" style="border:0; filter: grayscale(100%) opacity(0.8);" allowfullscreen="" loading="lazy"></iframe>
+</section>
 @endsection

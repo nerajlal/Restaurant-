@@ -6,116 +6,115 @@
 
 <!-- Table Session Banner -->
 @if(session('table_id'))
-<div class="bg-success text-white text-center py-2 fixed-top" style="z-index: 1030; top: 0;">
-    <small>Ordering for <strong>{{ session('table_name') }}</strong></small>
+<div class="bg-dark text-white text-center py-2 fixed-top" style="z-index: 1030; top: 0;">
+    <small class="font-lato letter-spacing-1">Ordering for <strong>{{ session('table_name') }}</strong></small>
 </div>
-<div style="margin-top: 40px;"></div> <!-- Spacer for fixed banner -->
+<div style="margin-top: 40px;"></div> <!-- Spacer -->
 @endif
 
 <!-- Hero Section -->
-<section class="page-hero d-flex align-items-center justify-content-center" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; height: 60vh;">
-    <div class="text-center position-relative z-1">
-        <h1 class="display-4 fw-bold text-white mb-3 animate-up font-playfair">Our Menu</h1>
-        <p class="lead text-white-50 mb-0 animate-up delay-100">Handcrafted detail in every dish</p>
+<section class="position-relative d-flex align-items-center justify-content-center overflow-hidden" style="height: 50vh; margin-top: -100px; padding-top: 100px;">
+    <div class="position-absolute w-100 h-100 top-0 start-0" style="background: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed; opacity: 0.8;"></div>
+    <div class="position-absolute w-100 h-100 top-0 start-0 bg-white opacity-50"></div>
+    
+    <div class="text-center position-relative z-1" data-aos="fade-up">
+        <h6 class="text-dark text-uppercase letter-spacing-3 mb-3 small fw-bold">Executive Selection</h6>
+        <h1 class="display-3 text-dark fw-bold mb-3 font-cinzel">Fine Dining</h1>
     </div>
 </section>
 
 <!-- Menu Categories -->
-<section class="py-5 bg-light">
+<section class="section-padding bg-light-texture py-5">
     <div class="container">
         <!-- Categories Filter -->
-        <div class="scroll-wrapper mb-5 animate-up delay-200">
-            <div class="d-flex gap-3 pb-3" style="overflow-x: auto; white-space: nowrap;">
-                <a href="{{ route('menu.index') }}" 
-                   class="btn btn-outline-gold rounded-pill px-4 {{ !request('category') ? 'active' : '' }}">
-                   All Items
-                </a>
-                @foreach($categories as $category)
-                <a href="{{ route('menu.index', ['category' => $category->id]) }}" 
-                   class="btn btn-outline-gold rounded-pill px-4 {{ request('category') == $category->id ? 'active' : '' }}">
-                   {{ $category->name }}
-                </a>
-                @endforeach
-            </div>
+        <div class="d-flex justify-content-center gap-4 flex-wrap pb-5" data-aos="fade-up" data-aos-delay="100">
+            <a href="{{ route('menu.index') }}" 
+               class="text-uppercase letter-spacing-2 text-decoration-none pb-2 {{ !request('category') ? 'text-gold border-bottom border-gold' : 'text-muted border-bottom border-transparent hover-border-dark' }}" style="font-size: 0.85rem; transition: all 0.3s;">
+               All Items
+            </a>
+            @foreach($categories as $category)
+            <a href="{{ route('menu.index', ['category' => $category->id]) }}" 
+               class="text-uppercase letter-spacing-2 text-decoration-none pb-2 {{ request('category') == $category->id ? 'text-gold border-bottom border-gold' : 'text-muted border-bottom border-transparent hover-border-dark' }}" style="font-size: 0.85rem; transition: all 0.3s;">
+               {{ $category->name }}
+            </a>
+            @endforeach
         </div>
 
-        <!-- Menu Grid -->
-        <div class="row g-4">
-            @forelse($items as $item)
-            <div class="col-md-6 col-lg-4 animate-up delay-300">
-                <div class="menu-item-card h-100 d-flex flex-column card border-0 shadow-sm bg-white rounded-3 overflow-hidden">
-                    <div class="position-relative overflow-hidden">
+        <!-- Menu List -->
+        <div class="row g-5 justify-content-center">
+            <div class="col-lg-10">
+                @forelse($items as $index => $item)
+                <div class="row align-items-center mb-5 pb-5 border-bottom border-light" data-aos="fade-up" data-aos-delay="{{ 100 + ($index * 50) }}">
+                    <!-- Image -->
+                    <div class="col-md-3">
                         @if($item->image)
-                            <img src="{{ asset('storage/' . $item->image) }}" class="img-fluid w-100" style="height: 250px; object-fit: cover; transition: transform 0.5s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" alt="{{ $item->name }}">
-                        @else
-                            <div class="bg-light w-100 d-flex align-items-center justify-content-center" style="height: 250px;">
-                                <i class="fas fa-utensils fa-3x text-muted"></i>
+                            <div class="overflow-hidden">
+                                <img src="{{ asset('storage/' . $item->image) }}" class="img-fluid w-100 object-fit-cover" style="height: 150px; filter: grayscale(10%);" alt="{{ $item->name }}">
                             </div>
-                        @endif
-                        
-                        @if($item->is_vegetarian)
-                        <span class="position-absolute top-0 end-0 m-3 badge bg-success rounded-pill">
-                            <i class="fas fa-leaf me-1"></i> Veg
-                        </span>
+                        @else
+                            <div class="bg-white w-100 d-flex align-items-center justify-content-center border border-light" style="height: 150px;">
+                                <i class="fas fa-utensils fa-2x text-muted opacity-25"></i>
+                            </div>
                         @endif
                     </div>
                     
-                    <div class="card-body p-4 flex-grow-1 d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h5 class="text-dark mb-0 playfair">{{ $item->name }}</h5>
-                            <span class="h5 text-gold mb-0 fw-bold">₹{{ number_format($item->price, 2) }}</span>
+                    <!-- Content -->
+                    <div class="col-md-7 ps-md-5">
+                        <div class="d-flex align-items-baseline justify-content-between mb-2">
+                            <h4 class="font-cinzel text-dark mb-0">{{ $item->name }}</h4>
+                            @if($item->is_vegetarian)
+                                <span class="text-success ms-2" title="Vegetarian"><i class="fas fa-leaf small"></i></span>
+                            @endif
                         </div>
-                        <p class="text-muted small mb-4 flex-grow-1">{{ $item->description }}</p>
-                        
+                        <p class="text-muted font-lato mb-0 leading-relaxed">{{ $item->description }}</p>
+                    </div>
+
+                    <!-- Price & Action -->
+                    <div class="col-md-2 text-md-end mt-3 mt-md-0">
+                        <h5 class="text-gold font-cinzel fw-bold mb-3">₹{{ number_format($item->price, 0) }}</h5>
                         @if(session('table_id'))
-                        <button class="btn btn-gold w-100 mt-auto" onclick="addToCart({{ $item->id }})">
-                            <i class="fas fa-plus me-2"></i> Add to Order
-                        </button>
+                            <button class="btn btn-outline-dark rounded-circle p-0 d-flex align-items-center justify-content-center ms-auto hover-bg-gold border-light text-muted" style="width: 40px; height: 40px; transition: all 0.3s;" onclick="addToCart({{ $item->id }})">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         @endif
                     </div>
                 </div>
+                @empty
+                <div class="text-center py-5">
+                    <h4 class="font-cinzel text-muted">No items found in this collection.</h4>
+                </div>
+                @endforelse
             </div>
-            @empty
-            <div class="col-12 text-center py-5">
-                <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                <h3 class="text-dark">No items found</h3>
-                <p class="text-muted">Try selecting a different category</p>
-            </div>
-            @endforelse
         </div>
     </div>
 </section>
 
-<!-- Floating Cart Button -->
+<!-- Floating Cart Logic (Hidden or Minimalist) -->
 @if(session('table_id'))
-<div class="fixed-bottom p-3 d-flex justify-content-center" style="z-index: 1040;">
-    <button class="btn btn-gold rounded-pill shadow-lg px-4 py-3 fw-bold d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#cartModal">
-        <i class="fas fa-shopping-basket"></i>
-        <span>View Order</span>
-        <span class="badge bg-dark rounded-pill ms-2" id="cart-count">0</span>
+<div class="fixed-bottom p-4 d-flex justify-content-end pointer-events-none">
+    <button class="btn-gold shadow-lg px-4 py-3 d-flex align-items-center gap-3 pointer-events-auto" data-bs-toggle="modal" data-bs-target="#cartModal" style="border-radius: 0;">
+        <span class="font-cinzel text-uppercase letter-spacing-1">Your Order</span>
+        <span class="bg-white text-gold d-flex align-items-center justify-content-center fw-bold rounded-circle" style="width: 25px; height: 25px; font-size: 0.8rem;" id="cart-count">0</span>
     </button>
 </div>
 
 <!-- Cart Modal -->
 <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header border-bottom">
-                <h5 class="modal-title font-playfair text-dark">Your Order</h5>
+        <div class="modal-content border-0 rounded-0 shadow-lg">
+            <div class="modal-header border-bottom border-light bg-white">
+                <h5 class="modal-title font-cinzel text-dark">Your Selection</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body bg-white" id="cart-items-container">
+            <div class="modal-body bg-white py-4" id="cart-items-container">
                 <!-- Cart items will be injected here -->
-                <div class="text-center py-4 text-muted">
-                    <i class="fas fa-spinner fa-spin fa-2x"></i>
-                </div>
             </div>
-            <div class="modal-footer border-top justify-content-between bg-white">
+            <div class="modal-footer border-top border-light bg-white justify-content-between">
                 <div>
-                    <small class="text-muted">Total</small>
-                    <h4 class="text-gold mb-0 fw-bold" id="cart-total">₹0.00</h4>
+                    <small class="text-muted text-uppercase letter-spacing-1 d-block mb-1">Total Amount</small>
+                    <h4 class="text-gold mb-0 font-cinzel" id="cart-total">₹0.00</h4>
                 </div>
-                <button type="button" class="btn btn-gold" onclick="placeOrder()">Place Order</button>
+                <button type="button" class="btn-gold" onclick="placeOrder()">Confirm Order</button>
             </div>
         </div>
     </div>
@@ -124,7 +123,7 @@
 <script>
     // Initial fetch
     document.addEventListener('DOMContentLoaded', function() {
-        fetchCart();
+        if(document.getElementById('cart-count')) fetchCart();
     });
 
     function fetchCart() {
@@ -146,8 +145,8 @@
         })
         .then(response => response.json())
         .then(data => {
-            fetchCart(); // Refresh cart
-            // Optional: Show toast
+            fetchCart();
+            // Show minimal toast notification if needed
         });
     }
 
@@ -175,12 +174,12 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ notes: '' }) // Can add notes input later
+            body: JSON.stringify({ notes: '' })
         })
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                alert('Order Placed! Order ID: #' + data.order_id);
+                alert('Order Placed Successfully');
                 window.location.reload();
             } else {
                 alert(data.error || 'Something went wrong');
@@ -193,21 +192,23 @@
         let html = '';
         
         if (Object.keys(cart).length === 0) {
-            html = '<div class="text-center py-5 text-muted"><i class="fas fa-shopping-basket fa-3x mb-3"></i><p>Your cart is empty</p></div>';
+            html = '<div class="text-center py-5 text-muted"><p class="font-lato">Your selection is empty.</p></div>';
         } else {
             html = '<ul class="list-group list-group-flush">';
             for (const [id, item] of Object.entries(cart)) {
                 count += item.quantity;
                 html += `
-                    <li class="list-group-item border-bottom d-flex justify-content-between align-items-center px-0">
-                        <div>
-                            <h6 class="mb-0 text-dark">${item.name}</h6>
-                            <small class="text-gold fw-bold">₹${item.price}</small>
-                        </div>
-                        <div class="d-flex align-items-center gap-2">
-                            <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
-                            <span>${item.quantity}</span>
-                            <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                    <li class="list-group-item border-bottom border-light px-0 py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1 text-dark font-cinzel">${item.name}</h6>
+                                <small class="text-muted">₹${item.price}</small>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <button class="btn btn-sm btn-outline-light text-dark border-0 p-0" onclick="updateQuantity(${item.id}, ${item.quantity - 1})"><i class="fas fa-minus small"></i></button>
+                                <span class="font-lato">${item.quantity}</span>
+                                <button class="btn btn-sm btn-outline-light text-dark border-0 p-0" onclick="updateQuantity(${item.id}, ${item.quantity + 1})"><i class="fas fa-plus small"></i></button>
+                            </div>
                         </div>
                     </li>
                 `;
@@ -215,9 +216,14 @@
             html += '</ul>';
         }
 
-        document.getElementById('cart-items-container').innerHTML = html;
-        document.getElementById('cart-total').innerText = '₹' + total.toFixed(2);
-        document.getElementById('cart-count').innerText = count;
+        const container = document.getElementById('cart-items-container');
+        if(container) container.innerHTML = html;
+        
+        const totalEl = document.getElementById('cart-total');
+        if(totalEl) totalEl.innerText = '₹' + total.toFixed(2);
+        
+        const countEl = document.getElementById('cart-count');
+        if(countEl) countEl.innerText = count;
     }
 </script>
 @endif

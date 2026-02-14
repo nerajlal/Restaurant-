@@ -1,112 +1,101 @@
 @extends('layouts.public')
 
+@section('title', 'Welcome')
+
 @section('content')
 <!-- Hero Section -->
-<section class="hero-section d-flex align-items-center justify-content-center text-center" style="background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; height: 100vh; position: relative;">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.2);"></div> <!-- Light overlay -->
-    <div class="container position-relative">
-        <p class="text-uppercase letter-spacing-2 mb-3 fw-bold text-dark animate__animated animate__fadeInUp">Fine Dining Experience</p>
-        <h1 class="display-1 fw-bold text-dark mb-4 animate__animated animate__fadeInUp font-playfair">Test <span class="text-gold">Resto</span></h1>
-        <p class="lead mb-5 px-lg-5 mx-lg-5 text-dark animate__animated animate__fadeInUp animate__delay-1s fw-medium">Where culinary artistry meets timeless elegance. Every dish tells a story of passion and precision.</p>
-        <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
-            <a href="{{ route('menu.index') }}" class="btn btn-gold btn-lg">Explore Menu</a>
-            <a href="{{ route('menu.index') }}" class="btn btn-outline-gold btn-lg text-dark border-dark hover-gold">Order Now</a>
+<section class="vh-100 d-flex align-items-center justify-content-center position-relative overflow-hidden" style="margin-top: -100px;">
+    <!-- Background Video/Image -->
+    <div class="position-absolute w-100 h-100" style="z-index: -1;">
+        <video autoplay muted loop playsinline class="w-100 h-100 object-fit-cover">
+            <source src="https://cdn.pixabay.com/video/2020/05/25/40139-424021239_large.mp4" type="video/mp4">
+            <!-- Calm abstract water/nature video -->
+            <img src="https://images.unsplash.com/photo-1549488391-5843c08cdde0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Serene Dining" class="w-100 h-100 object-fit-cover">
+        </video>
+        <div class="position-absolute top-0 start-0 w-100 h-100 bg-white" style="opacity: 0.1;"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="text-center position-relative z-1" data-aos="fade-up" data-aos-duration="1500">
+        <h6 class="text-uppercase letter-spacing-3 mb-4 small fw-bold text-white">Welcome to</h6>
+        <h1 class="display-1 text-white fw-bold mb-4 font-cinzel" style="text-shadow: 0 4px 30px rgba(0,0,0,0.1);">The White Lotus</h1>
+        <p class="lead text-white mb-5 mx-auto font-lato" style="max-width: 600px; letter-spacing: 0.1em;">
+            A sanctuary of taste and tranquility.
+        </p>
+        <a href="{{ route('menu.index') }}" class="btn btn-outline-light rounded-0 px-5 py-3 font-cinzel text-uppercase letter-spacing-2">Explore Menu</a>
+    </div>
+</section>
+
+<!-- Editorial Section 1: Culinary Artistry -->
+<section class="section-padding py-5 my-5">
+    <div class="container py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Culinary Art" class="img-fluid w-100 shadow-sm" style="filter: brightness(1.05);">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 border border-white opacity-50" style="transform: translate(20px, 20px); z-index: -1;"></div>
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1" data-aos="fade-left">
+                <h6 class="text-gold text-uppercase letter-spacing-2 mb-3">Our Philosophy</h6>
+                <h2 class="display-4 font-cinzel text-dark mb-4">Culinary Artistry</h2>
+                <div style="width: 50px; height: 1px; background: var(--primary-gold);" class="mb-4"></div>
+                <p class="text-muted leading-loose mb-4">
+                    We believe that dining is an art form. Every dish is a canvas, and every ingredient is a stroke of color. Our chefs curate flavors that dance on the palate, creating a symphony of taste that lingers long after the meal is over.
+                </p>
+                <a href="{{ route('about') }}" class="btn-link text-dark text-uppercase letter-spacing-1 text-decoration-none fw-bold border-bottom border-dark pb-1">Read Our Story</a>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Signature Dishes (formerly Featured Menu) -->
-<section class="section-padding bg-white">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h6 class="text-gold text-uppercase letter-spacing-2 mb-3">Chef's Selection</h6>
-            <h2 class="display-4 font-playfair text-dark">Signature Dishes</h2>
-        </div>
-        <div class="row g-4">
-            @forelse($featuredItems as $item)
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden bg-white">
-                     <div style="height: 250px; overflow: hidden;">
-                        @if($item->image)
-                            <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top h-100 w-100" style="object-fit: cover; transition: transform 0.5s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" alt="{{ $item->name }}">
-                        @else
-                            <div class="d-flex align-items-center justify-content-center h-100 bg-light">
-                                <i class="fas fa-utensils fa-3x text-muted"></i>
-                            </div>
-                        @endif
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h5 class="card-title font-playfair mb-0 text-dark">{{ $item->name }}</h5>
-                            <span class="text-gold fw-bold">₹{{ number_format($item->price, 2) }}</span>
-                        </div>
-                        <p class="card-text text-muted small mb-0">{{ Str::limit($item->description, 60) }}</p>
-                    </div>
-                </div>
+<!-- Editorial Section 2: Sustainable Luxury -->
+<section class="section-padding py-5 bg-light-texture">
+    <div class="container py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5 order-2 order-lg-1" data-aos="fade-right">
+                <h6 class="text-gold text-uppercase letter-spacing-2 mb-3">Sustainably Sourced</h6>
+                <h2 class="display-4 font-cinzel text-dark mb-4">Nature's Finest</h2>
+                <div style="width: 50px; height: 1px; background: var(--primary-gold);" class="mb-4"></div>
+                <p class="text-muted leading-loose mb-4">
+                    True luxury lies in purity. We partner with local artisans and farmers to bring you ingredients that are as kind to the earth as they are to your body. From farm to table, we ensure integrity in every bite.
+                </p>
+                <a href="{{ route('menu.index') }}" class="btn-link text-dark text-uppercase letter-spacing-1 text-decoration-none fw-bold border-bottom border-dark pb-1">View Seasonal Menu</a>
             </div>
-            @empty
-            <div class="col-12 text-center">
-                <p class="text-muted">No featured items available yet.</p>
-            </div>
-            @endforelse
-        </div>
-        <div class="text-center mt-5">
-            <a href="{{ route('menu.index') }}" class="btn text-gold fw-bold text-uppercase" style="letter-spacing: 1px;">View Full Menu <i class="fas fa-arrow-right ms-2"></i></a>
-        </div>
-    </div>
-</section>
-
-<!-- Testimonials -->
-<section class="section-padding" style="background-color: #fdfbf7;">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h6 class="text-gold text-uppercase letter-spacing-2 mb-3">Testimonials</h6>
-            <h2 class="display-4 font-playfair text-dark">What Our Guests Say</h2>
-        </div>
-        <div class="row g-4">
-            <!-- Testimonial 1 -->
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm p-4 text-center bg-white">
-                    <div class="mb-3 text-gold">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="text-muted fst-italic mb-4">"An unforgettable dining experience. Every dish was a masterpiece."</p>
-                    <h5 class="font-playfair text-dark mb-0">Sarah Mitchell</h5>
-                </div>
-            </div>
-             <!-- Testimonial 2 -->
-             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm p-4 text-center bg-white">
-                    <div class="mb-3 text-gold">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="text-muted fst-italic mb-4">"The attention to detail and warmth of service is truly exceptional."</p>
-                    <h5 class="font-playfair text-dark mb-0">James Rivera</h5>
-                </div>
-            </div>
-             <!-- Testimonial 3 -->
-             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm p-4 text-center bg-white">
-                    <div class="mb-3 text-gold">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="text-muted fst-italic mb-4">"Test Resto has become our family's favorite for special occasions."</p>
-                    <h5 class="font-playfair text-dark mb-0">Emily Chen</h5>
+            <div class="col-lg-6 offset-lg-1 order-1 order-lg-2" data-aos="fade-left">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1466978913421-dad938661248?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Fresh Ingredients" class="img-fluid w-100 shadow-sm">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 border border-white opacity-50" style="transform: translate(-20px, -20px); z-index: -1;"></div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Reservation / CTA -->
-<!-- <section class="section-padding bg-white text-center">
-    <div class="container">
-        <h2 class="display-4 font-playfair text-dark mb-3">Reserve Your Table</h2>
-        <p class="lead text-muted mb-5">Experience culinary excellence. Book your table today or scan the QR code at your seat to order.</p>
-        <div class="d-flex justify-content-center gap-3">
-             <button class="btn btn-gold btn-lg px-5">Make a Reservation</button>
-             <a href="{{ route('menu.index') }}" class="btn btn-outline-gold btn-lg px-5 text-dark">QR Order</a>
+<!-- Signature Section -->
+<section class="section-padding py-5 mb-5">
+    <div class="container py-5 text-center">
+        <h6 class="text-gold text-uppercase letter-spacing-2 mb-3" data-aos="fade-up">Curated for You</h6>
+        <h2 class="display-4 font-cinzel text-dark mb-5" data-aos="fade-up" data-aos-delay="100">Signature Selections</h2>
+        
+        <div class="row g-4 justify-content-center">
+            @foreach($featuredItems as $item)
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card border-0 bg-transparent h-100">
+                    <div class="position-relative mb-4 overflow-hidden">
+                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="img-fluid w-100 object-fit-cover" style="height: 400px; filter: grayscale(20%); transition: all 0.5s ease;" onmouseover="this.style.filter='grayscale(0%)'; this.style.transform='scale(1.05)';" onmouseout="this.style.filter='grayscale(20%)'; this.style.transform='scale(1)';">
+                    </div>
+                    <h4 class="font-cinzel text-dark mb-2">{{ $item->name }}</h4>
+                    <p class="text-muted small text-uppercase letter-spacing-1 mb-3">{{ $item->category->name ?? 'Special' }}</p>
+                    <p class="text-gold font-cinzel fw-bold">₹{{ number_format($item->price, 0) }}</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        
+        <div class="mt-5 pt-4" data-aos="fade-up">
+            <a href="{{ route('menu.index') }}" class="btn-outline-gold">View Full Collection</a>
         </div>
     </div>
-</section> -->
+</section>
 @endsection

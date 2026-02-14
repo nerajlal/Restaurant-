@@ -5,95 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Test Resto') }} | Premium Dining Experience</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Cinzel (Headers) & Lato (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS -->
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <style>
         :root {
-            --primary-gold: #d4af37;
-            --dark-bg: #fdfbf7; /* Cream/Light Background */
-            --card-bg: #ffffff;
-            --text-light: #333333; /* Dark Text */
+            --primary-gold: #C5A059; /* Muted Gold */
+            --light-bg: #FAFAFA; /* Alabaster */
+            --pure-white: #FFFFFF;
+            --text-dark: #333333; /* Dark Slate */
             --text-muted: #666666;
-            --footer-bg: #121212; /* Keep footer dark */
+            --border-light: #E5E5E5;
         }
 
         body {
             font-family: 'Lato', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
+            background-color: var(--light-bg);
+            color: var(--text-dark);
             overflow-x: hidden;
+            line-height: 1.8;
         }
 
-        h1, h2, h3, h4, h5, h6, .navbar-brand {
-            font-family: 'Playfair Display', serif;
+        h1, h2, h3, h4, h5, h6, .font-cinzel {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.05em;
         }
 
         /* Navbar */
         .navbar {
-            padding: 1.5rem 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
             transition: all 0.3s ease;
-            background: transparent;
-        }
-
-        .navbar.scrolled {
-            background-color: rgba(255, 255, 255, 0.95); /* Light background on scroll */
-            padding: 0.8rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem 0;
         }
 
         .navbar-brand {
-            font-size: 1.8rem;
-            color: var(--text-light) !important; /* Dark text for brand */
+            font-family: 'Cinzel', serif;
             font-weight: 700;
-            letter-spacing: 1px;
+            font-size: 1.8rem;
+            color: var(--text-dark) !important;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
 
         .nav-link {
-            color: var(--text-light) !important; /* Dark text for links */
+            font-family: 'Lato', sans-serif;
             font-weight: 400;
+            color: var(--text-dark) !important;
             text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            margin: 0 10px;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            margin: 0 1rem;
             position: relative;
+            transition: color 0.3s ease;
         }
 
         .nav-link::after {
             content: '';
             position: absolute;
-            width: 0;
-            height: 2px;
-            background: var(--primary-gold);
             bottom: -5px;
-            left: 0;
-            transition: width 0.3s ease;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: var(--primary-gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
 
         .nav-link:hover::after, .nav-link.active::after {
             width: 100%;
         }
 
+        /* Buttons */
         .btn-gold {
             background-color: var(--primary-gold);
             color: #fff;
-            border: 2px solid var(--primary-gold);
-            padding: 10px 30px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
+            border: 1px solid var(--primary-gold);
+            padding: 0.8rem 2rem;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            border-radius: 0;
             transition: all 0.3s ease;
-            border-radius: 5px; /* Slight rounding */
         }
 
         .btn-gold:hover {
@@ -104,13 +109,13 @@
         .btn-outline-gold {
             background-color: transparent;
             color: var(--primary-gold);
-            border: 2px solid var(--primary-gold);
-            padding: 10px 30px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
+            border: 1px solid var(--primary-gold);
+            padding: 0.8rem 2rem;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            border-radius: 0;
             transition: all 0.3s ease;
-            border-radius: 5px;
         }
 
         .btn-outline-gold:hover {
@@ -118,167 +123,107 @@
             color: #fff;
         }
 
+        /* Utilities */
+        .text-gold { color: var(--primary-gold) !important; }
+        .bg-light-texture { background-color: var(--light-bg); }
+        
         /* Footer */
         footer {
-            background-color: var(--footer-bg);
-            color: #fff; /* Force white text in footer */
-            padding: 80px 0 40px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            background-color: var(--pure-white);
+            border-top: 1px solid var(--border-light);
+            padding: 4rem 0;
         }
 
-        .footer-logo {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary-gold);
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .social-icons a {
-            color: white;
-            font-size: 1.2rem;
-            margin-right: 15px;
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
             transition: color 0.3s ease;
+            font-family: 'Lato', sans-serif;
         }
 
-        .social-icons a:hover {
+        .footer-link:hover {
             color: var(--primary-gold);
-        }
-        
-        /* Footer specific overrides */
-        footer .text-muted {
-            color: #adb5bd !important;
-        }
-        footer h5 {
-            color: #fff !important;
-        }
-
-        /* Utilities */
-        .text-gold {
-            color: var(--primary-gold) !important;
-        }
-
-        .bg-dark-overlay {
-            background: rgba(0,0,0,0.6);
-        }
-
-        .section-padding {
-            padding: 100px 0;
-        }
-        
-        .card {
-            background-color: var(--card-bg);
-            border: none;
         }
     </style>
-    @stack('styles')
 </head>
 <body>
-    
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">Test Resto</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            <a class="navbar-brand mx-auto d-lg-none" href="/">The White Lotus</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Home</a>
+            <div class="collapse navbar-collapse justify-content-center text-center" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('menu.*') ? 'active' : '' }}" href="{{ route('menu.index') }}">Menu</a></li>
+                    
+                    <li class="nav-item mx-4 d-none d-lg-block">
+                        <a class="navbar-brand" href="/">The White Lotus</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('menu.index') ? 'active' : '' }}" href="{{ route('menu.index') }}">Menu</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact</a>
-                    </li>
-                    <!-- Book Table Removed -->
-                    @auth
-                        <li class="nav-item dropdown ms-lg-3">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ Auth::user()->name }}
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item">Logout</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    @else
-                        <li class="nav-item ms-lg-3">
-                            <a class="nav-link" href="{{ route('login') }}">Login</a>
-                        </li>
-                    @endauth
+                    
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">About</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact</a></li>
                 </ul>
+            </div>
+            
+            <!-- Right Actions (Cart/Auth) -->
+            <div class="position-absolute end-0 top-50 translate-middle-y me-4 d-none d-lg-flex gap-3 align-items-center">
+                @if(session('table_id'))
+                    <a href="#" class="text-dark position-relative" data-bs-toggle="modal" data-bs-target="#cartModal">
+                        <i class="fas fa-shopping-bag fa-lg"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                            {{ count(session('cart', [])) }}
+                        </span>
+                    </a>
+                @else
+                    @auth
+                        <a href="{{ url('/dashboard') }}" class="text-dark"><i class="fas fa-user fa-lg"></i></a>
+                    @else
+                        <a href="{{ route('login') }}" class="text-dark"><i class="far fa-user fa-lg"></i></a>
+                    @endauth
+                @endif
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    @yield('content')
+    <main style="padding-top: 100px;">
+        @yield('content')
+    </main>
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h3 class="footer-logo">Test Resto</h3>
-                    <p class="text-muted">Experience the finest dining with a blend of modern atmosphere and culinary excellence.</p>
-                    <div class="social-icons mt-3">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h5 class="text-white mb-3">Opening Hours</h5>
-                    <ul class="list-unstyled text-muted">
-                        <li class="mb-2">Mon - Fri: 11:00 AM - 11:00 PM</li>
-                        <li class="mb-2">Sat - Sun: 10:00 AM - 12:00 AM</li>
-                    </ul>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h5 class="text-white mb-3">Contact Us</h5>
-                    <ul class="list-unstyled text-muted">
-                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2 text-gold"></i> 123 Luxury Avenue, New York</li>
-                        <li class="mb-2"><i class="fas fa-phone me-2 text-gold"></i> +1 234 567 8900</li>
-                        <li class="mb-2"><i class="fas fa-envelope me-2 text-gold"></i> info@testresto.com</li>
-                    </ul>
-                </div>
+        <div class="container text-center">
+            <h2 class="font-cinzel text-dark mb-4">The White Lotus</h2>
+            <div class="d-flex justify-content-center gap-4 mb-5">
+                <a href="{{ route('home') }}" class="footer-link">Home</a>
+                <a href="{{ route('menu.index') }}" class="footer-link">Menu</a>
+                <a href="{{ route('about') }}" class="footer-link">About</a>
+                <a href="{{ route('contact') }}" class="footer-link">Contact</a>
             </div>
-            <hr class="border-secondary mt-4">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="text-muted mb-0">&copy; {{ date('Y') }} Test Resto. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <p class="text-muted mb-0">Designed for Luxury.</p>
-                </div>
+            <div class="mb-4">
+                <a href="#" class="text-muted mx-2"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-muted mx-2"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-muted mx-2"><i class="fab fa-twitter"></i></a>
             </div>
+            <p class="text-muted small mb-0">&copy; {{ date('Y') }} The White Lotus. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Navbar Scrolled Effect
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 50) {
-                document.querySelector('.navbar').classList.add('scrolled');
-            } else {
-                document.querySelector('.navbar').classList.remove('scrolled');
-            }
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 50
         });
     </script>
-    @stack('scripts')
 </body>
 </html>
