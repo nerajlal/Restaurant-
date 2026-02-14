@@ -7,15 +7,23 @@
         <p class="text-muted small">Analyze performance for {{ $rangeLabel }}</p>
     </div>
     <div class="col-md-6 text-md-end">
-        <form action="{{ route('admin.analytics.index') }}" method="GET" class="d-inline-flex gap-2">
-            <select name="range" class="form-select w-auto" onchange="this.form.submit()">
-                <option value="today" {{ $range == 'today' ? 'selected' : '' }}>Today</option>
-                <option value="this_week" {{ $range == 'this_week' ? 'selected' : '' }}>This Week</option>
-                <option value="this_month" {{ $range == 'this_month' ? 'selected' : '' }}>This Month</option>
-                <option value="6_months" {{ $range == '6_months' ? 'selected' : '' }}>Last 6 Months</option>
-                <option value="1_year" {{ $range == '1_year' ? 'selected' : '' }}>Last 1 Year</option>
-            </select>
-        </form>
+        <div class="d-flex gap-2 justify-content-md-end">
+            <form action="{{ route('admin.analytics.index') }}" method="GET" class="d-inline-flex">
+                <select name="range" class="form-select w-auto" onchange="this.form.submit()">
+                    <option value="today" {{ $range == 'today' ? 'selected' : '' }}>Today</option>
+                    <option value="this_week" {{ $range == 'this_week' ? 'selected' : '' }}>This Week</option>
+                    <option value="this_month" {{ $range == 'this_month' ? 'selected' : '' }}>This Month</option>
+                    <option value="6_months" {{ $range == '6_months' ? 'selected' : '' }}>Last 6 Months</option>
+                    <option value="1_year" {{ $range == '1_year' ? 'selected' : '' }}>Last 1 Year</option>
+                </select>
+            </form>
+            <a href="{{ route('admin.analytics.export_pdf', request()->all()) }}" class="btn btn-outline-danger">
+                <i class="fas fa-file-pdf me-1"></i> PDF
+            </a>
+            <a href="{{ route('admin.analytics.export_excel', request()->all()) }}" class="btn btn-outline-success">
+                <i class="fas fa-file-excel me-1"></i> Excel
+            </a>
+        </div>
     </div>
 </div>
 

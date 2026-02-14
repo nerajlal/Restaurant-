@@ -250,4 +250,118 @@ class AnalyticsController extends Controller
             'orderCountTrend'
         ));
     }
+
+    public function exportPdf(Request $request)
+    {
+        $data = $this->getAnalyticsData($request);
+        $pdf = \PDF::loadView('admin.analytics.analytics_pdf', $data);
+        return $pdf->download('analytics-report-' . now()->format('Y-m-d') . '.pdf');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $data = $this->getAnalyticsData($request);
+        return \Excel::download(new \App\Exports\AnalyticsExport($data), 'analytics-report-' . now()->format('Y-m-d') . '.xlsx');
+    }
+
+    private function getAnalyticsData(Request $request)
+    {
+        // Date Range Logic (same as index method)
+        $range = $request->get('range', 'today');
+        $startDate = $request->get('start_date');
+        $endDate = $request->get('end_date');
+
+        if ($startDate && $endDate) {
+            $start = Carbon::parse($startDate)->startOfDay();
+            $end = Carbon::parse($endDate)->endOfDay();
+            $rangeLabel = $start->format('M d, Y') . ' - ' . $end->format('M d, Y');
+        } else {
+            switch ($range) {
+                case 'today':
+                    $start = Carbon::today();
+                    $end = Carbon::today()->endOfDay();
+                    $rangeLabel = 'Today';
+                    break;
+                case 'yesterday':
+                    $start = Carbon::yesterday();
+                    $end = Carbon::yesterday()->endOfDay();
+                    $rangeLabel = 'Yesterday';
+                    break;
+                case 'last_7_days':
+                    $start = Carbon::today()->subDays(6);
+                    $end = Carbon::today()->endOfDay();
+                    $rangeLabel = 'Last 7 Days';
+                    break;
+                case 'last_30_days':
+                    $start = Carbon::today()->subDays(29);
+                    $end = Carbon::today()->endOfDay();
+                    $rangeLabel = 'Last 30 Days';
+                    break;
+                case 'this_month':
+                    $start = Carbon::now()->startOfMonth();
+                    $end = Carbon::now()->endOfMonth();
+                    $rangeLabel = 'This Month';
+                    break;
+                case 'last_month':
+                    $start = Carbon::now()->subMonth()->startOfMonth();
+                    $end = Carbon::now()->subMonth()->endOfMonth();
+                    $rangeLabel = 'Last Month';
+                    break;
+                default:
+                    $start = Carbon::today();
+                    $end = Carbon::today()->endOfDay();
+                    $rangeLabel = 'Today';
+            }
+        }
+
+        // Base Query for Completed Orders
+        $ordersQuery = Order::whereIn('status', ['confirmed', 'preparing', 'ready', 'served'])
+            ->whereBetween('created_at', [$start, $end]);
+
+        // Key Metrics
+        $totalRevenue = (clone $ordersQuery)->sum('total_amount');
+        $totalOrders = (clone $ordersQuery)->count();
+        $averageOrderValue = $totalOrders > 0 ? $totalRevenue / $totalOrders : 0;
+
+        // Total Items Sold
+        $totalItemsSold = OrderItem::whereHas('order', function ($q) use ($start, $end) {
+            $q->whereIn('status', ['confirmed', 'preparing', 'ready', 'served'])
+                ->whereBetween('created_at', [$start, $end]);
+        })->sum('quantity');
+
+        // Completion Rate
+        $totalAllOrders = Order::whereBetween('created_at', [$start, $end])->count();
+        $completedOrders = Order::whereIn('status', ['served'])->whereBetween('created_at', [$start, $end])->count();
+        $completionRate = $totalAllOrders > 0 ? ($completedOrders / $totalAllOrders) * 100 : 0;
+
+        // Top Selling Items
+        $topItems = OrderItem::select('menu_item_id', 'name', DB::raw('SUM(quantity) as total_quantity'), DB::raw('SUM(price * quantity) as total_revenue'))
+            ->whereHas('order', function ($q) use ($start, $end) {
+                $q->whereIn('status', ['confirmed', 'preparing', 'ready', 'served'])
+                    ->whereBetween('created_at', [$start, $end]);
+            })
+            ->groupBy('menu_item_id', 'name')
+            ->orderBy('total_quantity', 'desc')
+            ->limit(10)
+            ->get();
+
+        // Table Performance
+        $tablePerformance = Order::select('table_name', DB::raw('COUNT(*) as order_count'), DB::raw('SUM(total_amount) as total_revenue'), DB::raw('AVG(total_amount) as avg_order'))
+            ->whereIn('status', ['confirmed', 'preparing', 'ready', 'served'])
+            ->whereBetween('created_at', [$start, $end])
+            ->groupBy('table_name')
+            ->orderBy('total_revenue', 'desc')
+            ->get();
+
+        return [
+            'rangeLabel' => $rangeLabel,
+            'totalRevenue' => $totalRevenue,
+            'totalOrders' => $totalOrders,
+            'averageOrderValue' => $averageOrderValue,
+            'totalItemsSold' => $totalItemsSold,
+            'completionRate' => $completionRate,
+            'topItems' => $topItems,
+            'tablePerformance' => $tablePerformance,
+        ];
+    }
 }

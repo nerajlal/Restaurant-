@@ -35,7 +35,10 @@ Route::post('/cart/place-order-direct', [CartController::class, 'placeOrderDirec
 // Admin Routes
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // Analytics
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+    Route::get('/analytics/export-pdf', [AnalyticsController::class, 'exportPdf'])->name('analytics.export_pdf');
+    Route::get('/analytics/export-excel', [AnalyticsController::class, 'exportExcel'])->name('analytics.export_excel');
     
     Route::resource('categories', CategoryController::class);
     Route::resource('menu_items', MenuItemController::class);
