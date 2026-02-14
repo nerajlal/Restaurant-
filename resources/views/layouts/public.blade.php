@@ -21,10 +21,11 @@
     <style>
         :root {
             --primary-gold: #d4af37;
-            --dark-bg: #121212;
-            --card-bg: #1e1e1e;
-            --text-light: #f8f9fa;
-            --text-muted: #adb5bd;
+            --dark-bg: #fdfbf7; /* Cream/Light Background */
+            --card-bg: #ffffff;
+            --text-light: #333333; /* Dark Text */
+            --text-muted: #666666;
+            --footer-bg: #121212; /* Keep footer dark */
         }
 
         body {
@@ -46,20 +47,20 @@
         }
 
         .navbar.scrolled {
-            background-color: rgba(18, 18, 18, 0.95);
+            background-color: rgba(255, 255, 255, 0.95); /* Light background on scroll */
             padding: 0.8rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .navbar-brand {
             font-size: 1.8rem;
-            color: var(--primary-gold) !important;
+            color: var(--text-light) !important; /* Dark text for brand */
             font-weight: 700;
             letter-spacing: 1px;
         }
 
         .nav-link {
-            color: white !important;
+            color: var(--text-light) !important; /* Dark text for links */
             font-weight: 400;
             text-transform: uppercase;
             font-size: 0.9rem;
@@ -85,14 +86,14 @@
 
         .btn-gold {
             background-color: var(--primary-gold);
-            color: #000;
+            color: #fff;
             border: 2px solid var(--primary-gold);
             padding: 10px 30px;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 700;
             transition: all 0.3s ease;
-            border-radius: 0;
+            border-radius: 5px; /* Slight rounding */
         }
 
         .btn-gold:hover {
@@ -109,17 +110,18 @@
             letter-spacing: 1px;
             font-weight: 700;
             transition: all 0.3s ease;
-            border-radius: 0;
+            border-radius: 5px;
         }
 
         .btn-outline-gold:hover {
             background-color: var(--primary-gold);
-            color: #000;
+            color: #fff;
         }
 
         /* Footer */
         footer {
-            background-color: #000;
+            background-color: var(--footer-bg);
+            color: #fff; /* Force white text in footer */
             padding: 80px 0 40px;
             border-top: 1px solid rgba(255,255,255,0.1);
         }
@@ -141,6 +143,14 @@
         .social-icons a:hover {
             color: var(--primary-gold);
         }
+        
+        /* Footer specific overrides */
+        footer .text-muted {
+            color: #adb5bd !important;
+        }
+        footer h5 {
+            color: #fff !important;
+        }
 
         /* Utilities */
         .text-gold {
@@ -153,6 +163,11 @@
 
         .section-padding {
             padding: 100px 0;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border: none;
         }
     </style>
     @stack('styles')
