@@ -197,9 +197,13 @@
     <!-- Header / Branding -->
     <div class="bg-white shadow-sm pb-3 pt-3 mb-2 sticky-top" style="z-index: 1030; top: 0;">
         <div class="container px-3 text-center">
-            <h1 class="font-cinzel fw-bold mb-1" style="font-family: 'Cinzel', serif; color: var(--main-text);">The White Lotus</h1>
-            <p class="small text-muted mb-1"><i class="fas fa-map-marker-alt me-1"></i> 123 Resort Drive, Sicily, Italy</p>
-            <p class="small text-muted mb-0"><i class="fas fa-phone-alt me-1"></i> +39 0942 123456</p>
+            <h1 class="font-cinzel fw-bold mb-1" style="font-family: 'Cinzel', serif; color: var(--main-text);">{{ \App\Models\Setting::get('restaurant_name', 'Restaurant') }}</h1>
+            @if(\App\Models\Setting::get('restaurant_address'))
+            <p class="small text-muted mb-1"><i class="fas fa-map-marker-alt me-1"></i> {{ \App\Models\Setting::get('restaurant_address') }}</p>
+            @endif
+            @if(\App\Models\Setting::get('restaurant_phone'))
+            <p class="small text-muted mb-0"><i class="fas fa-phone-alt me-1"></i> {{ \App\Models\Setting::get('restaurant_phone') }}</p>
+            @endif
         </div>
     </div>
 

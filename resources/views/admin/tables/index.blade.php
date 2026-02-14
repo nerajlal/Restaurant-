@@ -38,6 +38,9 @@
                             </div>
                             <div class="small text-muted mt-1" style="font-size: 0.75rem;">
                                 {{ route('table.login', $table->token) }}
+                                <a href="{{ route('table.login', $table->token) }}" target="_blank" class="ms-1" title="Open in new tab">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
                             </div>
                         </td>
                         <td>

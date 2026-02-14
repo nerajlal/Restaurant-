@@ -45,6 +45,40 @@ class OrderController extends Controller
         return response()->json(['success' => true]);
     }
 
+
+    public function history(Request $request)
+    {
+        $query = Order::with('items');
+
+        // Date range filter
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        // Status filter
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Table filter
+        if ($request->filled('table')) {
+            $query->where('table_name', $request->table);
+        }
+
+        // Search by order ID
+        if ($request->filled('search')) {
+            $query->where('id', 'like', '%' . $request->search . '%');
+        }
+
+        $orders = $query->orderBy('created_at', 'desc')->paginate(20);
+        $tables = Order::distinct()->pluck('table_name');
+
+        return view('admin.orders.history', compact('orders', 'tables'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([

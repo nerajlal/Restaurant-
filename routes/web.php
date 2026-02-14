@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ReservationController as AdminReservationControll
 use App\Http\Controllers\Admin\TableController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\AnalyticsController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\CartController;
 
 // Public Routes
@@ -50,11 +51,16 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Live Orders
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders/live', [OrderController::class, 'live'])->name('orders.live');
+    Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history');
     Route::get('/orders/fetch', [OrderController::class, 'fetchPending'])->name('orders.fetch');
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update_status');
 
     Route::get('/qr-code', [App\Http\Controllers\Admin\QrCodeController::class, 'index'])->name('qr_code.index');
     Route::get('/qr-code/download', [App\Http\Controllers\Admin\QrCodeController::class, 'download'])->name('qr_code.download');
+    
+    // Settings
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 });
 
 // Profile Routes (Standard Breeze)

@@ -278,7 +278,7 @@
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-brand">
                 <i class="fas fa-store text-success"></i>
-                <span class="ms-2">Test Resto</span>
+                <span class="ms-2">{{ \App\Models\Setting::get('restaurant_name', 'Restaurant') }}</span>
                 <button class="btn btn-link text-muted d-md-none ms-auto" onclick="toggleSidebar()">
                     <i class="fas fa-times"></i>
                 </button>
@@ -296,6 +296,10 @@
                 <a class="nav-link {{ request()->routeIs('admin.orders.live') ? 'active' : '' }}" href="{{ route('admin.orders.live') }}">
                     <i class="fas fa-satellite-dish"></i>
                     Live Orders
+                </a>
+                <a class="nav-link {{ request()->routeIs('admin.orders.history') ? 'active' : '' }}" href="{{ route('admin.orders.history') }}">
+                    <i class="fas fa-history"></i>
+                    Order History
                 </a>
                 <a class="nav-link {{ request()->routeIs('admin.tables.*') ? 'active' : '' }}" href="{{ route('admin.tables.index') }}">
                     <i class="fas fa-chair"></i>
@@ -323,6 +327,10 @@
                     <i class="fas fa-external-link-alt"></i>
                     View Website
                 </a>
+                <a class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.index') }}">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </a>
             </div>
         </nav>
 
@@ -344,12 +352,12 @@
 
                 <div class="d-flex align-items-center gap-3">
                     <!-- Notification Icon -->
-                    <div class="position-relative cursor-pointer text-secondary">
+                    <a href="{{ route('admin.orders.live') }}" class="position-relative text-decoration-none text-secondary" id="orderNotification">
                         <i class="fas fa-bell fa-lg"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-                            <span class="visually-hidden">New alerts</span>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="orderBadge" style="display: none; font-size: 0.65rem;">
+                            0
                         </span>
-                    </div>
+                    </a>
 
                     <!-- User Menu -->
                     <div class="dropdown">
@@ -391,6 +399,62 @@
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('show');
         }
+
+        // Order Notification System
+        let lastPendingCount = parseInt(localStorage.getItem('lastPendingCount') || '0');
+        
+        // Create audio context for notification sound
+        function playNotificationSound() {
+            // Create a simple beep using Web Audio API
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800; // Frequency in Hz
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        }
+
+        function updateOrderNotification() {
+            fetch('{{ route('admin.orders.fetch') }}')
+                .then(response => response.json())
+                .then(data => {
+                    const pendingCount = data.pending_count || 0;
+                    const badge = document.getElementById('orderBadge');
+                    
+                    // Update badge
+                    if (pendingCount > 0) {
+                        badge.textContent = pendingCount;
+                        badge.style.display = 'inline-block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                    
+                    // Play sound if new orders arrived
+                    if (pendingCount > lastPendingCount && lastPendingCount >= 0) {
+                        playNotificationSound();
+                    }
+                    
+                    // Update last count
+                    lastPendingCount = pendingCount;
+                    localStorage.setItem('lastPendingCount', pendingCount);
+                })
+                .catch(error => console.error('Error fetching orders:', error));
+        }
+
+        // Poll every 5 seconds
+        setInterval(updateOrderNotification, 5000);
+        
+        // Initial check
+        updateOrderNotification();
     </script>
 </body>
 </html>
