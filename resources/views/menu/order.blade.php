@@ -43,7 +43,9 @@
             padding: 10px 15px;
             background: #fff;
             position: sticky;
-            top: 60px; /* Below navbar */
+            background: #fff;
+            position: sticky;
+            top: 106px; /* Below header */
             z-index: 1020;
             border-bottom: 1px solid var(--border-color);
             -ms-overflow-style: none;
@@ -192,24 +194,30 @@
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-light bg-white sticky-top shadow-sm px-3" style="height: 60px;">
-        <div class="d-flex align-items-center w-100">
-            <div class="flex-grow-1">
-                <div class="fw-bold" style="font-size: 0.8rem; text-transform: uppercase; color: var(--secondary-text);">Table</div>
-                <div class="fw-bold fs-5">{{ $table->name }}</div>
-            </div>
-            
-            <button class="btn btn-outline-secondary btn-sm rounded-circle" data-bs-toggle="modal" data-bs-target="#searchModal">
-                <i class="fas fa-search"></i>
-            </button>
+    <!-- Header / Branding -->
+    <div class="bg-white shadow-sm pb-3 pt-3 mb-2 sticky-top" style="z-index: 1030; top: 0;">
+        <div class="container px-3 text-center">
+            <h1 class="font-cinzel fw-bold mb-1" style="font-family: 'Cinzel', serif; color: var(--main-text);">The White Lotus</h1>
+            <p class="small text-muted mb-1"><i class="fas fa-map-marker-alt me-1"></i> 123 Resort Drive, Sicily, Italy</p>
+            <p class="small text-muted mb-0"><i class="fas fa-phone-alt me-1"></i> +39 0942 123456</p>
         </div>
-    </nav>
+    </div>
+
+    <!-- Table Info Bar -->
+    <div class="container px-3 mb-2">
+        <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3">
+             <div>
+                <div class="small text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">Ordering For</div>
+                <div class="fw-bold text-dark">{{ $table->name }}</div>
+             </div>
+             <div class="text-success small fw-bold"><i class="fas fa-circle me-1" style="font-size: 8px;"></i> Live</div>
+        </div>
+    </div>
 
     <!-- Categories -->
     <div class="category-scroll">
         @foreach($categories as $category)
-        <a href="#cat-{{ $category->id }}" class="category-chip">{{ $category->name }}</a>
+        <a href="#cat-{{ $category->id }}" class="category-chip" id="link-cat-{{ $category->id }}" onclick="setActiveCategory(event, '{{ $category->id }}')">{{ $category->name }}</a>
         @endforeach
     </div>
 
@@ -218,7 +226,7 @@
         @foreach($categories as $category)
             @php $catItems = $items->where('category_id', $category->id); @endphp
             @if($catItems->count() > 0)
-                <div id="cat-{{ $category->id }}" class="pt-4">
+                <div id="cat-{{ $category->id }}" class="pt-4 category-section" data-id="{{ $category->id }}">
                     <h2 class="h5 fw-bold mb-3">{{ $category->name }}</h2>
                     @foreach($catItems as $item)
                     <div class="menu-item d-flex justify-content-between">
@@ -252,6 +260,22 @@
             @endif
         @endforeach
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center py-3 mt-4" style="margin-bottom: 60px;">
+        <div class="container d-flex flex-column flex-sm-row justify-content-center align-items-center gap-2">
+        <a href="{{ route('home') }}" class="text-decoration-none text-muted small me-2">    
+        <div class="small text-muted">&copy; {{ date('Y') }} The White Lotus</div></a>
+            <div class="d-none d-sm-block text-muted mx-1">•</div>
+            <!-- <div class="mb-0">
+                <a href="{{ route('home') }}" class="text-decoration-none text-muted small me-2">Home</a>
+                <a href="{{ route('contact') }}" class="text-decoration-none text-muted small">Contact</a>
+            </div> -->
+            <div class="small text-muted" style="font-size: 0.75rem;">
+                Dev by <a href="https://metora.in" target="_blank" class="text-decoration-none fw-bold" style="color: var(--primary-color);">metora.in</a>
+            </div>
+        </div>
+    </footer>
 
     <!-- Cart Floating Footer -->
     <div id="cart-footer" class="cart-footer">
@@ -452,6 +476,49 @@
                 });
             }
         };
+
+        // Scroll Spy Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.category-section');
+            const navLinks = document.querySelectorAll('.category-chip');
+            const scrollContainer = document.querySelector('.category-scroll');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-180px 0px -60% 0px', // Adjust offsets for sticky headers
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('data-id');
+                        
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        const activeLink = document.getElementById(`link-cat-${id}`);
+                        if(activeLink) {
+                            activeLink.classList.add('active');
+                            
+                            // Scroll chip into view
+                            const containerRect = scrollContainer.getBoundingClientRect();
+                            const linkRect = activeLink.getBoundingClientRect();
+                            
+                            if (linkRect.left < containerRect.left || linkRect.right > containerRect.right) {
+                                activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                            }
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => observer.observe(section));
+        });
+
+        function setActiveCategory(e, id) {
+            // e.preventDefault();
+            // document.getElementById(`cat-${id}`).scrollIntoView({ behavior: 'smooth' });
+            // Manual click handling if needed, but anchor links works well defaults
+        }
     </script>
 </body>
 </html>
