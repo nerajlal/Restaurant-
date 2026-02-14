@@ -301,6 +301,10 @@
                     <i class="fas fa-chair"></i>
                     Tables & QR
                 </a>
+                <a class="nav-link {{ request()->routeIs('admin.analytics.*') ? 'active' : '' }}" href="{{ route('admin.analytics.index') }}">
+                    <i class="fas fa-chart-bar"></i>
+                    Analytics
+                </a>
 
                 <div class="text-muted small fw-bold px-3 mt-3 mb-1 text-uppercase" style="font-size: 0.7rem;">Products</div>
                 <a class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}">
@@ -312,11 +316,7 @@
                     Menu Items
                 </a>
                 
-                <div class="text-muted small fw-bold px-3 mt-3 mb-1 text-uppercase" style="font-size: 0.7rem;">Marketing</div>
-                <a class="nav-link {{ request()->routeIs('admin.qr_code.*') ? 'active' : '' }}" href="{{ route('admin.qr_code.index') }}">
-                    <i class="fas fa-qrcode"></i>
-                    QR Codes
-                </a>
+
                 
                 <div class="text-muted small fw-bold px-3 mt-3 mb-1 text-uppercase" style="font-size: 0.7rem;">Online Store</div>
                 <a class="nav-link" href="{{ route('home') }}" target="_blank">
