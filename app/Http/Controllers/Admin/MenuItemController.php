@@ -11,10 +11,53 @@ use Illuminate\Support\Str;
 
 class MenuItemController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $menuItems = MenuItem::with('category')->get();
-        return view('admin.menu_items.index', compact('menuItems'));
+        $query = MenuItem::with('category');
+
+        // Search by name
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by category
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        // Filter by status (is_active)
+        if ($request->filled('status')) {
+            if ($request->status === 'active') {
+                $query->where('is_active', true);
+            } elseif ($request->status === 'inactive') {
+                $query->where('is_active', false);
+            }
+        }
+
+        // Filter by availability
+        if ($request->filled('availability')) {
+            if ($request->availability === 'available') {
+                $query->where('is_available', true);
+            } elseif ($request->availability === 'unavailable') {
+                $query->where('is_available', false);
+            }
+        }
+
+        $menuItems = $query->get();
+        $categories = Category::all();
+        
+        return view('admin.menu_items.index', compact('menuItems', 'categories'));
+    }
+
+    public function toggleAvailability(MenuItem $menuItem)
+    {
+        $menuItem->is_available = !$menuItem->is_available;
+        $menuItem->save();
+
+        return response()->json([
+            'success' => true,
+            'is_available' => $menuItem->is_available
+        ]);
     }
 
     public function create()

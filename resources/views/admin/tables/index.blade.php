@@ -17,7 +17,7 @@
                 <thead class="bg-light">
                     <tr>
                         <th class="ps-4">Name</th>
-                        <th>Order Menu</th>
+                        <!-- <th>Order Menu</th> -->
                         <th>QR Code</th>
                         <th>Status</th>
                         <th class="text-end pe-4">Actions</th>
@@ -27,11 +27,11 @@
                     @forelse($tables as $table)
                     <tr class="align-middle">
                         <td class="ps-4 fw-medium">{{ $table->name }}</td>
-                        <td>
+                        <!-- <td>
                             <a href="{{ route('admin.tables.order', $table) }}" class="text-decoration-none small fw-bold text-success">
                                 <i class="fas fa-utensils me-1"></i> Open Menu
                             </a>
-                        </td>
+                        </td> -->
                         <td>
                             <div class="bg-light rounded p-2 d-inline-block border">
                                 {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate(route('table.login', $table->token)) !!}

@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     
     Route::resource('categories', CategoryController::class);
     Route::resource('menu_items', MenuItemController::class);
+    Route::post('/menu_items/{menuItem}/toggle-availability', [MenuItemController::class, 'toggleAvailability'])->name('menu_items.toggle_availability');
     
     // Reservations Removed as per request
 

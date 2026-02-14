@@ -246,7 +246,11 @@
                             
                             <!-- Add Button Container -->
                             <div class="add-btn-container" data-id="{{ $item->id }}">
-                                <button class="btn-add-main" onclick="cart.add({{ $item->id }})">ADD</button>
+                                @if($item->is_available)
+                                    <button class="btn-add-main" onclick="cart.add({{ $item->id }})">ADD</button>
+                                @else
+                                    <button class="btn-add-main" disabled style="background: #ccc; cursor: not-allowed;">UNAVAILABLE</button>
+                                @endif
                                 <div class="qty-controls d-none">
                                     <button class="qty-btn" onclick="cart.decrease({{ $item->id }})">-</button>
                                     <span class="fw-bold text-success qty-text" style="font-size: 0.9rem;">1</span>
