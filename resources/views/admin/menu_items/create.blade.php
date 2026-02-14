@@ -59,7 +59,7 @@
                     <div class="mb-3">
                         <label for="price" class="form-label fw-bold">Price</label>
                         <div class="input-group">
-                            <span class="input-group-text">$</span>
+                            <span class="input-group-text">₹</span>
                             <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
                         </div>
                     </div>

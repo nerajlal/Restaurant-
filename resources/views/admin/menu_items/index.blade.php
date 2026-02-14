@@ -43,7 +43,7 @@
                             @endif
                         </td>
                         <td>{{ $item->category->name ?? 'Uncategorized' }}</td>
-                        <td>${{ number_format($item->price, 2) }}</td>
+                        <td class="fw-bold">₹{{ number_format($item->price, 2) }}</td>
                         <td>
                             @if($item->is_active)
                                 <span class="badge bg-success">Active</span>
