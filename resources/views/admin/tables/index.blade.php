@@ -17,7 +17,7 @@
                 <thead class="bg-light">
                     <tr>
                         <th class="ps-4">Name</th>
-                        <th>Table URL</th>
+                        <th>Order Menu</th>
                         <th>QR Code</th>
                         <th>Status</th>
                         <th class="text-end pe-4">Actions</th>
@@ -28,19 +28,25 @@
                     <tr class="align-middle">
                         <td class="ps-4 fw-medium">{{ $table->name }}</td>
                         <td>
-                            <a href="{{ route('table.login', $table->token) }}" target="_blank" class="text-decoration-none small text-muted">
-                                {{ route('table.login', $table->token) }} <i class="fas fa-external-link-alt ms-1"></i>
+                            <a href="{{ route('admin.tables.order', $table) }}" class="text-decoration-none small fw-bold text-success">
+                                <i class="fas fa-utensils me-1"></i> Open Menu
                             </a>
                         </td>
                         <td>
                             <div class="bg-light rounded p-2 d-inline-block border">
                                 {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate(route('table.login', $table->token)) !!}
                             </div>
+                            <div class="small text-muted mt-1" style="font-size: 0.75rem;">
+                                {{ route('table.login', $table->token) }}
+                            </div>
                         </td>
                         <td>
                             <span class="badge bg-success">Active</span>
                         </td>
                         <td class="text-end pe-4">
+                            <!-- <a href="{{ route('admin.tables.order', $table) }}" class="btn btn-sm btn-success me-2">
+                                <i class="fas fa-utensils"></i> Order
+                            </a> -->
                             <a href="{{ route('admin.tables.download_qr', $table) }}" class="btn btn-sm btn-outline-secondary me-2">
                                 <i class="fas fa-download"></i> SVG
                             </a>

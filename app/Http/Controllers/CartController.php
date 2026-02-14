@@ -108,4 +108,52 @@ class CartController extends Controller
 
         return response()->json(['success' => true, 'order_id' => $order->id]);
     }
+
+    public function placeOrderDirect(Request $request)
+    {
+        if (!Session::has('table_id')) {
+            return response()->json(['error' => 'Table session expired. Please scan QR again.'], 403);
+        }
+
+        $request->validate([
+             'items' => 'required|array|min:1',
+             'items.*.id' => 'required|exists:menu_items,id',
+             'items.*.quantity' => 'required|integer|min:1',
+        ]);
+
+        $table_id = Session::get('table_id');
+        $table_name = Session::get('table_name');
+
+        $total = 0;
+        foreach($request->items as $itemData) {
+             $menuItem = MenuItem::find($itemData['id']);
+             if($menuItem) {
+                 $total += $menuItem->price * $itemData['quantity'];
+             }
+        }
+
+        $order = Order::create([
+            'table_id' => $table_id,
+            'table_name' => $table_name,
+            'status' => 'pending',
+            'total_amount' => $total,
+            'customer_notes' => $request->notes ?? '',
+        ]);
+
+        foreach ($request->items as $itemData) {
+             $menuItem = MenuItem::find($itemData['id']);
+             if($menuItem) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'menu_item_id' => $menuItem->id,
+                    'name' => $menuItem->name,
+                    'price' => $menuItem->price,
+                    'quantity' => $itemData['quantity'],
+                    // 'notes' => $itemData['notes'] ?? '', // Notes per item not in simple UI yet
+                ]);
+             }
+        }
+
+        return response()->json(['success' => true, 'order_id' => $order->id]);
+    }
 }

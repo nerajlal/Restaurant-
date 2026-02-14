@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Table;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Models\Category;
+use App\Models\MenuItem;
 
 class TableController extends Controller
 {
@@ -43,7 +45,14 @@ class TableController extends Controller
         $qrCode = QrCode::format('svg')->size(500)->generate($url);
 
         return response($qrCode)
-            ->header('Content-Type', 'image/svg+xml')
             ->header('Content-Disposition', 'attachment; filename="table-' . $table->id . '-qr.svg"');
+    }
+
+    public function order(Table $table)
+    {
+        $categories = Category::where('is_active', true)->get();
+        $items = MenuItem::where('is_active', true)->with('category')->get();
+
+        return view('admin.tables.order', compact('table', 'categories', 'items'));
     }
 }
